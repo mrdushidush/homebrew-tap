@@ -1,7 +1,6 @@
 class Claudette < Formula
   desc "Air-gapped coding agent in one Rust binary, driving a local model"
   homepage "https://github.com/mrdushidush/claudette"
-  version "0.18.1"
   license any_of: ["MIT", "Apache-2.0"]
 
   on_macos do
