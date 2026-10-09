@@ -1,0 +1,24 @@
+name: test
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  formula:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+      - name: put brew on PATH (Linux runners ship it, unlinked)
+        if: runner.os == 'Linux'
+        run: echo "/home/linuxbrew/.linuxbrew/bin" >> "$GITHUB_PATH"
+      - name: tap this checkout
+        run: brew tap mrdushidush/tap "$GITHUB_WORKSPACE"
+      - run: brew install mrdushidush/tap/claudette
+      - run: brew test mrdushidush/tap/claudette
+      - run: brew audit mrdushidush/tap/claudette
